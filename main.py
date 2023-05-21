@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 from faker import Faker
+import csv
 import itertools
 
 app = Flask(__name__)
@@ -27,7 +28,14 @@ def generate_users():
 
 @app.route('/mean/')
 def mean():
-    return ''
+    with open('hw.csv', newline='') as csv_file:
+        data = list(csv.reader(csv_file))
+        sum_high = 0
+        sum_weight = 0
+        for i in range(1, len(data)-1):
+            sum_high += float(data[i][1])*2.54
+            sum_weight += float(data[i][2])/2.2046
+    return f'Аverage heigh: {round(sum_high/len(data))}<br>Average weight: {round(sum_weight/len(data))}'
 
 
 @app.route('/space/')
