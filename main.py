@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 from faker import Faker
+import requests
 import csv
 import itertools
 
@@ -13,14 +14,14 @@ def main():
 @app.route('/requirements/')
 def requirements():
     with open('requirements.txt', 'r') as file:
-        out = file.read().replace('\n', '<br>')
-    return f"Requirements:<br> {out}"
+        output = file.read().replace('\n', '<br>')
+    return f"Requirements:<br> {output}"
 
 
 @app.route('/generate-users/', methods=['GET', 'POST'])
 def generate_users():
     fake = Faker()
-    names, emails = [], []
+    names = []
     result = ''
     for _ in range(request.args.get('count', default=1, type=int)):
         names.append(f'{fake.name()}')
@@ -43,7 +44,8 @@ def mean():
 
 @app.route('/space/')
 def space():
-    return ''
+    r = requests.get('http://api.open-notify.org/astros.json').json()
+    return f"The number of astronauts at the moment: {str(r['number'])}"
 
 
 if __name__ == '__main__':
