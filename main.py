@@ -1,5 +1,7 @@
 from flask import Flask
+from flask import request
 from faker import Faker
+import itertools
 
 app = Flask(__name__)
 
@@ -11,10 +13,16 @@ def requirements():
     return f"Requirements:<br> {out}"
 
 
-@app.route('/generate-users/')
+@app.route('/generate-users/', methods=['GET', 'POST'])
 def generate_users():
-
-    return ''
+    fake = Faker()
+    names, emails = [], []
+    result = ''
+    for _ in range(request.args.get('count', default=1, type=int)):
+        names.append(f'{fake.name()}')
+    names_emails = [f"{item[0]}: {item[1]}" for item in itertools.zip_longest(names, [f"{item.lower().replace(' ', '')}@gmail.com" for item in names])]
+    for person in names_emails: result += f'{person}<br>'
+    return result
 
 
 @app.route('/mean/')
