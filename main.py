@@ -6,6 +6,9 @@ import itertools
 
 app = Flask(__name__)
 
+@app.route('/')
+def main():
+    return 'START HERE'
 
 @app.route('/requirements/')
 def requirements():
