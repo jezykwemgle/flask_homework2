@@ -11,6 +11,7 @@ app = Flask(__name__)
 def main():
     return 'START HERE'
 
+
 @app.route('/requirements/')
 def requirements():
     with open('requirements.txt', 'r') as file:
@@ -39,7 +40,7 @@ def mean():
         for i in range(1, len(data)-1):
             sum_high += float(data[i][1])*2.54
             sum_weight += float(data[i][2])/2.2046
-    return f'Аverage heigh: {round(sum_high/len(data))}<br>Average weight: {round(sum_weight/len(data))}'
+    return f'Аverage heigh: {round(sum_high/len(data))}cm<br>Average weight: {round(sum_weight/len(data))}kg'
 
 
 @app.route('/space/')
